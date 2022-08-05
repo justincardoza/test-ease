@@ -22,7 +22,7 @@ class Test
 	}
 	
 	
-	//Sets a timeout in milliseconds for this test.
+	//Sets a timeout in milliseconds for this test. If an asynchronous test runs longer than this, it will fail.
 	timeout(milliseconds)
 	{
 		this.timeoutDuration = milliseconds;
@@ -58,7 +58,9 @@ class Test
 		{
 			//Use either the test-specific timeout or the global timeout passed in from the TestList, in that order.
 			let duration = this.timeoutDuration || defaultTimeout;
-			//TODO: If this.action() is synchronous and takes a while to run, this code will not be able to enforce a timeout.
+			//If this.action() is synchronous and takes a while to run, this code will not be able to enforce a timeout.
+			//It's a good idea to use async actions, especially for tests that could take a long time to run or need to 
+			//perform tasks like waiting for I/O.
 			let resultPromise = this.action();
 			
 			if(duration)

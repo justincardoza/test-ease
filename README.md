@@ -55,8 +55,8 @@ Everything in `test-ease` revolves around the `TestList` object. A `TestList` is
 
 #### constructor(options)
 
-Creates a new `TestList` with an options object which can contain a `timeout` value (in milliseconds) which applies to all tests if specified.
-The timeout and the whole options object are optional.
+Creates a new `TestList` with an options object which can contain a `timeout` value (in milliseconds) which applies to all asynchronous 
+tests if specified. The timeout and the whole options object are optional.
 
 #### add()
 
@@ -95,8 +95,8 @@ will succeed if `action` completes successfully and fail if it throws an error. 
 
 #### timeout(milliseconds)
 
-Sets a timeout duration specific to this test. If the function set by `.action()` does not finish or fail before this limit, the test 
-will fail. If a test-specific timeout is set, that overrides any global timeout set on the `TestList`.
+Sets a timeout duration specific to this test. If the function set by `.action()` is asynchronous and does not finish or fail before this 
+limit, the test will fail. If a test-specific timeout is set, that overrides any global timeout set on the `TestList`.
 
 #### expect(what)
 
@@ -113,13 +113,6 @@ from the `TestList` (i.e. the default if the individual test doesn't have a time
 resolves to `true` if the test is successful or rejects if any error was encountered.
 
 
-## To-do
-
- - If a test is run with a synchronous action, timeouts won't currently be enforced since those are started after the test action. Given 
-   JavaScript's highly single-threaded nature, this might be difficult to fix without adding quite a bit of complexity. I plan to look 
-   into it and try to find a good solution soon. In the meantime, asynchronous test actions are probably a better idea anyway.
-
-
 ## Miscellaneous
 
 Here's something interesting I learned while writing this: if you define a module with a CommonJS-style export, for example 
@@ -132,3 +125,10 @@ for CommonJS code since the whole point of this project is to _lower_ barriers t
 just the bragging rights of having that shiny little `export` statement at the bottom of my code, I guess. If that means ensuring 
 compatibility with a vastly larger set of code that might need testing, that's a sacrifice I'm willing to make. Using a CommonJS 
 export still allows compatibility with newer code using `import`, so there doesn't seem to be much of a downside.
+
+If a test is run with a synchronous action function, timeouts won't be enforced since those are started after the test action and 
+rely on the event loop. Given JavaScript's highly single-threaded nature, this isn't really fixable without adding platform-specific 
+dependencies to support multithreading. Since I don't consider timeouts to be a critical feature, my advice is to use asynchronous 
+test actions as much as possible, especially for tests that may run long or need to wait on time-consuming operations like I/O. I 
+was hoping to be able to find a fix for this shortcoming, but the more I thought it through, I realized it wasn't really feasible 
+if I want to keep this package simple and compact.
