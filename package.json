@@ -1,6 +1,6 @@
 {
   "name": "test-ease",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A simple, easy testing framework that gets out of your way and lets you focus on the testing.",
   "homepage": "https://justincardoza.com/software/test-ease/",
   "repository": "github:justincardoza/test-ease",
@@ -12,6 +12,9 @@
     "test",
     "testing"
   ],
-  "author": { "name": "Justin Cardoza", "url": "https://justincardoza.com/" },
+  "author": {
+    "name": "Justin Cardoza",
+    "url": "https://justincardoza.com/"
+  },
   "license": "MIT"
 }
